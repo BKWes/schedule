@@ -13,23 +13,70 @@
 // var now = moment();
 // console.log(now);
 
+// set timeblock variables
+var hour9 = document.getElementById('hr-9');
+var hour10 = document.getElementById('hr-10');
+var hour11 = document.getElementById('hr-11');
+var hour12 = document.getElementById('hr-12');
+var hour1 = document.getElementById('hr-1');
+var hour2 = document.getElementById('hr-2');
+var hour3 = document.getElementById('hr-3');
+var hour4 = document.getElementById('hr-4');
+var hour5 = document.getElementById('hr-5');
 
-var timeblock = $('.time-block');
-var hour = $('.hour');
-var hours = ['00:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
+
+// get localStorage input based on ID
+hour9.innerHTML = localStorage.getItem('hr-9');
+hour10.innerHTML = localStorage.getItem('hr-10');
+hour11.innerHTML = localStorage.getItem('hr-11');
+hour12.innerHTML = localStorage.getItem('hr-12');
+hour1.innerHTML = localStorage.getItem('hr-1');
+hour2.innerHTML = localStorage.getItem('hr-2');
+hour3.innerHTML = localStorage.getItem('hr-3');
+hour4.innerHTML = localStorage.getItem('hr-4');
+hour5.innerHTML = localStorage.getItem('hr-5');
+// hour input is not persisting
+// when i refresh the saved items in local storage are cleared from page they persist inside of localStorage but the html is clear
+
+
+
 // get the current time (need format to be DAY OF WEEK-MM-DD-YYYY)
-var currentDate = moment('MM-DD-YYYY');
+$(document).ready(function() {
+  
+  // display date in header
+  var currentDay = moment().format('LLLL');
+  $('#currentDay').text(currentDay);
 
+  var currentTime = new Date();
+  var currentHour = currentTime.getHours();
 
-function createSchedule() {
-    // get current day 
-    $('#currentDay').append(currentDate);
+  // add classes to time blocks for past, present, future for color coordination
+  $('textarea').each(function (i) { // get textarea elements and apply this function to each 
+    // offset i by 9 for time slots
+    var hour = i + 9;
     
-
-    for (var i=0; i<hours.length; i++) {
-    var timeBlockEl = document.createElement('div')
-      timeBlockEl.className = 'time-block';
-      timeBlockEl.textContent = hours[i];
-    $('.container').append(timeBlockEl);
+    if (hour < currentHour) {
+      $(this).addClass('past');
+      localStorage.getItem('textarea');
     }
-};
+    else if (hour === currentHour) {
+      $(this).addClass('present');
+      localStorage.getItem('textarea');
+    } 
+    else {
+      $(this).addClass('future');
+      localStorage.getItem('textarea');
+    }
+  })
+
+
+  $('.saveBtn').on('click', function() {
+    var timeBlock = $(this).siblings('textarea'); // select the textarea on the same time block as the save btn that was clicked
+    var hourText = timeBlock.val();
+    var time = timeBlock.attr('id');
+    JSON.stringify(localStorage.setItem(time, hourText));
+    // console.log(hourText, time)
+
+  });
+
+});
