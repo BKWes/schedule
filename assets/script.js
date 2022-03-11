@@ -74,7 +74,7 @@ $(document).ready(function() {
     var timeBlock = $(this).siblings('textarea'); // select the textarea on the same time block as the save btn that was clicked
     var hourText = timeBlock.val();
     var time = timeBlock.attr('id');
-    JSON.stringify(localStorage.setItem(time, hourText));
+    JSON.stringify(localStorage.setItem(time, hourText)); // set id first 
     // console.log(hourText, time)
 
   });
